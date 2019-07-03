@@ -10,6 +10,6 @@ class TextMessage (  id:String,
                      date: Date = Date(),
                      var text: String
 ):BaseMessage(id,chat,from,isIncoming,date){
-    override fun formatMessage(): String = "id:$id from:${from.firstName}" +
+    override fun formatMessage(): String = "${from.firstName}" +
             " ${if(isIncoming) "получил" else "отправил"} сообщение \"$text\" ${date.humanizeDiff()}"
 }

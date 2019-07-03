@@ -2,269 +2,100 @@ package ru.skillbranch.devintensive.ustils
 
 object Utils {
     fun parseFullName(fullName:String?):Pair<String?,String?>{
-        //TODO()        fix me
-        val parts:List<String>? = fullName?.split(" ")
-
-        val  firstName =parts?.getOrNull(0)
-        val  lastName =parts?.getOrNull(1)
-        return firstName to lastName
-    }
-
-    fun transliterations(firsName:String?,lastName:String?): String {
-        val word = "$firsName$lastName"
-        val message = word.toCharArray()
-
-
-        val abcCyr = charArrayOf(
-            ' ',
-            'а',
-            'б',
-            'в',
-            'г',
-            'д',
-            'е',
-            'ё',
-            'ж',
-            'з',
-            'и',
-            'й',
-            'к',
-            'л',
-            'м',
-            'н',
-            'о',
-            'п',
-            'р',
-            'с',
-            'т',
-            'у',
-            'ф',
-            'х',
-            'ц',
-            'ч',
-            'ш',
-            'щ',
-            'ъ',
-            'ы',
-            'ь',
-            'э',
-            'ю',
-            'я',
-            'А',
-            'Б',
-            'В',
-            'Г',
-            'Д',
-            'Е',
-            'Ё',
-            'Ж',
-            'З',
-            'И',
-            'Й',
-            'К',
-            'Л',
-            'М',
-            'Н',
-            'О',
-            'П',
-            'Р',
-            'С',
-            'Т',
-            'У',
-            'Ф',
-            'Х',
-            'Ц',
-            'Ч',
-            'Ш',
-            'Щ',
-            'Ъ',
-            'Ы',
-            'Ь',
-            'Э',
-            'Ю',
-            'Я',
-            'a',
-            'b',
-            'c',
-            'd',
-            'e',
-            'f',
-            'g',
-            'h',
-            'i',
-            'j',
-            'k',
-            'l',
-            'm',
-            'n',
-            'o',
-            'p',
-            'q',
-            'r',
-            's',
-            't',
-            'u',
-            'v',
-            'w',
-            'x',
-            'y',
-            'z',
-            'A',
-            'B',
-            'C',
-            'D',
-            'E',
-            'F',
-            'G',
-            'H',
-            'I',
-            'J',
-            'K',
-            'L',
-            'M',
-            'N',
-            'O',
-            'P',
-            'Q',
-            'R',
-            'S',
-            'T',
-            'U',
-            'V',
-            'W',
-            'X',
-            'Y',
-            'Z'
-        )
-        val abcLat = arrayOf(
-            " ",
-            "a",
-            "b",
-            "v",
-            "g",
-            "d",
-            "e",
-            "e",
-            "zh",
-            "z",
-            "i",
-            "y",
-            "k",
-            "l",
-            "m",
-            "n",
-            "o",
-            "p",
-            "r",
-            "s",
-            "t",
-            "u",
-            "f",
-            "h",
-            "ts",
-            "ch",
-            "sh",
-            "sch",
-            "",
-            "i",
-            "",
-            "e",
-            "ju",
-            "ja",
-            "A",
-            "B",
-            "V",
-            "G",
-            "D",
-            "E",
-            "E",
-            "Zh",
-            "Z",
-            "I",
-            "Y",
-            "K",
-            "L",
-            "M",
-            "N",
-            "O",
-            "P",
-            "R",
-            "S",
-            "T",
-            "U",
-            "F",
-            "H",
-            "Ts",
-            "Ch",
-            "Sh",
-            "Sch",
-            "",
-            "I",
-            "",
-            "E",
-            "Ju",
-            "Ja",
-            "a",
-            "b",
-            "c",
-            "d",
-            "e",
-            "f",
-            "g",
-            "h",
-            "i",
-            "j",
-            "k",
-            "l",
-            "m",
-            "n",
-            "o",
-            "p",
-            "q",
-            "r",
-            "s",
-            "t",
-            "u",
-            "v",
-            "w",
-            "x",
-            "y",
-            "z",
-            "A",
-            "B",
-            "C",
-            "D",
-            "E",
-            "F",
-            "G",
-            "H",
-            "I",
-            "J",
-            "K",
-            "L",
-            "M",
-            "N",
-            "O",
-            "P",
-            "Q",
-            "R",
-            "S",
-            "T",
-            "U",
-            "V",
-            "W",
-            "X",
-            "Y",
-            "Z"
-        )
-        val builder = StringBuilder()
-        for (i in 0 until message.size) {
-            for (x in abcCyr.indices) {
-                if (message[i] == abcCyr[x]) {
-                    builder.append(abcLat[x])
-                }
+        if (fullName.isNullOrEmpty()||fullName.trim().isEmpty())
+            return null to null
+        val parts:List<String>? = fullName.trim().split(" ")
+        return when (parts?.size){
+            1-> parts.getOrNull(0) to null
+            else ->{
+                val  firstName =parts?.getOrNull(0)
+                val  lastName =parts?.getOrNull(1)
+                firstName to lastName
             }
         }
-        return builder.toString()
+    }
+    fun toInitials(firstName: String?,lastName: String?):String {
+        val first  = if (firstName.isNullOrEmpty()||firstName.trim().isEmpty()) null else firstName[0].toUpperCase()
+        if (lastName.isNullOrEmpty()) return first.toString()
+        val last:Char = if(lastName.isNullOrEmpty())'\u0000' else{ lastName[0].toUpperCase()}
+        return "$first$last"
+    }
+
+
+    fun transliteration(payload: String, divider:String = " "): String {
+        val mapping = payload.map {
+            when(it){
+                ' '->divider
+                'а'-> 'a'
+                'б' -> 'b'
+                'в' -> 'v'
+                'г' -> 'g'
+                'д' -> 'd'
+                'е' -> 'e'
+                'ё' -> 'e'
+                'ж' -> "zh"
+                'з' -> 'z'
+                'и' -> 'i'
+                'й' -> 'i'
+                'к' -> 'k'
+                'л' -> 'l'
+                'м' -> 'm'
+                'н' -> 'n'
+                'о' -> 'o'
+                'п' -> 'p'
+                'р' -> 'r'
+                'с' -> 's'
+                'т' -> 't'
+                'у' -> 'u'
+                'ф' -> 'f'
+                'х' -> 'h'
+                'ц' -> 'c'
+                'ч' -> "ch"
+                'ш' -> "sh"
+                'щ' -> "sh'"
+                'ъ' -> ""
+                'ы' -> 'i'
+                'ь' -> ""
+                'э' -> 'e'
+                'ю' -> "yu"
+                'я' -> "ya"
+                'А' -> 'A'
+                'Б' -> 'B'
+                'В' -> 'V'
+                'Г' -> 'G'
+                'Д' -> 'D'
+                'Е' -> 'E'
+                'Ё' -> 'E'
+                'Ж' -> "Zh"
+                'З' -> 'Z'
+                'И' -> 'I'
+                'Й' -> 'I'
+                'К' -> 'K'
+                'Л' -> 'L'
+                'М' -> 'M'
+                'Н' -> 'N'
+                'О' -> 'O'
+                'П' -> 'P'
+                'Р' -> 'R'
+                'С' -> 'S'
+                'Т' -> 'T'
+                'У' -> 'U'
+                'Ф' -> 'F'
+                'Х' -> 'H'
+                'Ц' -> 'C'
+                'Ч' -> "Ch"
+                'Ш' -> "Sh"
+                'Щ' -> "Sh'"
+                'Ъ' -> ""
+                'Ы' -> 'I'
+                'Ь' -> ""
+                'Э' -> 'E'
+                'Ю' -> "Yu"
+                'Я' -> "Ya"
+                else -> it
+            }
+        }
+
+        return mapping.joinToString(separator = "")
     }
 }
