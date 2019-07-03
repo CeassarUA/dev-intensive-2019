@@ -69,6 +69,7 @@ private fun getNumForm(pluralForms:String, value: Long):String{
     }
     return forms[2]
 }
+
 enum class TimeUnits{
     SECOND,
     MINUTE,

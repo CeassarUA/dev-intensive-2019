@@ -6,7 +6,7 @@ data class UserView(
     val nickName:String,
     val avatar:String?,
     val status:String,
-    val initials:String
+    val initials:String?
 ) {
 
     fun printMe(){
