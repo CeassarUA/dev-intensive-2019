@@ -21,8 +21,7 @@ abstract class BaseMessage (
             }
         }
         fun makeMessage(from: User,chat: Chat?, date:Date=Date(),type:String,payload:Any?, isIncoming: Boolean=false):BaseMessage{
-
-            return makeMessage(from, chat, date,if (type=="text") Type.IMAGE else Type.IMAGE,payload,isIncoming)
+            return makeMessage(from, chat, date,if (type=="text") Type.TEXT else Type.IMAGE,payload,isIncoming)
 
         }
     }
