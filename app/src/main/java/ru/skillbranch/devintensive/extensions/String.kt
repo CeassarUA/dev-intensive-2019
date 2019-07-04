@@ -10,7 +10,7 @@ fun String.truncate(length:Int=16):String{
     return res.plus("...")
 }
 fun String.stripHtml():String{
-    var tags = """(<[^<>]*>)|(  +)"""
+    var tags = """(<[^<>]*>)|(  +)|([&<>'"])"""
     val regex = Regex(  tags)
 
     return  regex.replace(this, "") // result: abxcdxef
