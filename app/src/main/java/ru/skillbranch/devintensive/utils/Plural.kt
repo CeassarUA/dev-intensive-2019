@@ -2,13 +2,13 @@ package ru.skillbranch.devintensive.utils
 
 import ru.skillbranch.devintensive.extensions.TimeUnits
 
-object Plurals {
+object Plural {
 
-    fun getPurals(value:Int,timeUnits: TimeUnits):String{
-
+    fun getPlural(value:Int, timeUnits: TimeUnits):String{
         val rez = when(Math.abs(value)%10){
             1-> get1Plural(timeUnits)
             2-> get2Plural(timeUnits)
+            4->get2Plural(timeUnits)
             else -> getManyPlural(timeUnits)
 
         }

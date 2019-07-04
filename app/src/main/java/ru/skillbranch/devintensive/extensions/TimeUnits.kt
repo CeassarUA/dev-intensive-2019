@@ -1,7 +1,7 @@
 package ru.skillbranch.devintensive.extensions
 
-import ru.skillbranch.devintensive.utils.Plurals
+import ru.skillbranch.devintensive.utils.Plural
 
 fun TimeUnits.plural(value: Int):String{
-    return Plurals.getPurals(value,this)
+    return Plural.getPlural(value,this)
 }
