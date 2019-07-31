@@ -97,24 +97,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEdito
         }
     }
 
-    private fun listenAnswer() {
-        val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString())
-        messageEt.setText("")
-        val (r, g, b) = color
-        benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
-        textTxt.text = phrase
-    }
-
     override fun onClick(v: View?) {
         if (v?.id == R.id.iv_send){
-           listenAnswer()
-            hideKeyboard()
+            val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
+            messageEt.setText("")
+            val (r, g, b) = color
+            benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
+            textTxt.text = phrase
         }
+        hideKeyboard()
     }
 
     override fun onEditorAction(textView: TextView?, actionId: Int, event: KeyEvent?): Boolean {
         if (textView == messageEt && actionId == EditorInfo.IME_ACTION_DONE) {
-            listenAnswer()
             this.hideKeyboard()
             return true
         }
