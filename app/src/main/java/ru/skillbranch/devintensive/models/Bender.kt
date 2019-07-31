@@ -48,49 +48,49 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
     enum class Question(val question: String, val answer:List<String>){
         NAME("Как меня зовут?", listOf("бендер", "bender")){
             override fun nextQuestion(): Question = PROFESSION
-            override fun validate(answer: String): Pair<Boolean, String?> {
-                return (answer.isNotEmpty() && answer[0].isLetter() && answer[0].isUpperCase()) to
-                        "Имя должно начинаться с заглавной буквы"
-            }
+//            override fun validate(answer: String): Pair<Boolean, String?> {
+//                return (answer.isNotEmpty() && answer[0].isLetter() && answer[0].isUpperCase()) to
+//                        "Имя должно начинаться с заглавной буквы"
+//            }
         },
         PROFESSION("Назови мою професию?", listOf("сгибальщик", "bender")){
             override fun nextQuestion(): Question = MATERIAL
-            override fun validate(answer: String): Pair<Boolean, String?> {
-                return (answer.isNotEmpty() && answer[0].isLetter() && answer[0].isUpperCase()) to
-                        "Профессия должна начинаться со строчной буквы"
-            }
+//            override fun validate(answer: String): Pair<Boolean, String?> {
+//                return (answer.isNotEmpty() && answer[0].isLetter() && answer[0].isUpperCase()) to
+//                        "Профессия должна начинаться со строчной буквы"
+//            }
         },
         MATERIAL("Из чего я сделан?", listOf("металл", "дерево", "metal", "iron", "wood")){
             override fun nextQuestion(): Question = BDAY
-            override fun validate(answer: String): Pair<Boolean, String?> {
-                return (answer.isNotEmpty() && answer[0].isLetter() && answer[0].isUpperCase()) to
-                        "Материал не должен содержать цифр"
-            }
+//            override fun validate(answer: String): Pair<Boolean, String?> {
+//                return (answer.isNotEmpty() && answer[0].isLetter() && answer[0].isUpperCase()) to
+//                        "Материал не должен содержать цифр"
+//            }
         },
         BDAY("Когда меня создали?", listOf("2993")){
             override fun nextQuestion(): Question = SERIAL
-            override fun validate(answer: String): Pair<Boolean, String?> {
-                return (answer.isNotEmpty() && answer[0].isLetter() && answer[0].isUpperCase()) to
-                        "Год моего рождения должен содержать только цифры"
-            }
+//            override fun validate(answer: String): Pair<Boolean, String?> {
+//                return (answer.isNotEmpty() && answer[0].isLetter() && answer[0].isUpperCase()) to
+//                        "Год моего рождения должен содержать только цифры"
+//            }
         },
         SERIAL("Мой серийный номер?", listOf("2716057")){
             override fun nextQuestion(): Question = IDLE
-            override fun validate(answer: String): Pair<Boolean, String?> {
-                return (answer.isNotEmpty() && answer[0].isLetter() && answer[0].isUpperCase()) to
-                        "Серийный номер содержит только цифры, и их 7"
-            }
+//            override fun validate(answer: String): Pair<Boolean, String?> {
+//                return (answer.isNotEmpty() && answer[0].isLetter() && answer[0].isUpperCase()) to
+//                        "Серийный номер содержит только цифры, и их 7"
+//            }
         },
         IDLE("На этом все, вопросов больше нет", listOf()){
             override fun nextQuestion(): Question = IDLE
-            override fun validate(answer: String): Pair<Boolean, String?> {
-                return true to ""
-            }
+//            override fun validate(answer: String): Pair<Boolean, String?> {
+//                return true to ""
+//            }
         };
 
         abstract fun nextQuestion():Question
 
-        abstract fun validate(answer: String): Pair<Boolean, String?>
+        //abstract fun validate(answer: String): Pair<Boolean, String?>
     }
 
 }

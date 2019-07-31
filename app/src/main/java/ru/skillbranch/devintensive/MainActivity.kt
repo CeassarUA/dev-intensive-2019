@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.models.Bender
 
-class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEditorActionListener{
+class MainActivity : AppCompatActivity(), View.OnClickListener{
     lateinit var benderImage: ImageView
     lateinit var textTxt: TextView
     lateinit var messageEt: EditText
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEdito
         textTxt.text = benderObj.askQuestion()
         sendBtn.setOnClickListener(this)
 
-        messageEt.setOnEditorActionListener(this)
+       // messageEt.setOnEditorActionListener(this)
     }
 
     override fun onRestart() {
@@ -89,13 +89,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEdito
         Log.d("M_MainActivity", "onSaveInstanceState ${benderObj.status.name} ${benderObj.question.name}")
     }
 
-    fun Activity.hideKeyboard() {
-        val view = this.currentFocus
-        if (view != null) {
-            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-    }
+//    fun Activity.hideKeyboard() {
+//        val view = this.currentFocus
+//        if (view != null) {
+//            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//            imm.hideSoftInputFromWindow(view.windowToken, 0)
+//        }
+//    }
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.iv_send){
@@ -105,15 +105,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEdito
             benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
             textTxt.text = phrase
         }
-        hideKeyboard()
+//        hideKeyboard()
     }
 
-    override fun onEditorAction(textView: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-        if (textView == messageEt && actionId == EditorInfo.IME_ACTION_DONE) {
-            this.hideKeyboard()
-            return true
-        }
-        return false
-    }
+//    override fun onEditorAction(textView: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+//        if (textView == messageEt && actionId == EditorInfo.IME_ACTION_DONE) {
+//            this.hideKeyboard()
+//            return true
+//        }
+//        return false
+//    }
 }
 
