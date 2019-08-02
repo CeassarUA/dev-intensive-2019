@@ -14,10 +14,13 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
     }
 
     fun listenAnswer(answer: String): Pair<String, Triple<Int, Int, Int>> {
+
         return if (question.answer.contains(answer)){
             question = question.nextQuestion()
             "Отлично - ты справился\n${question.question}" to status.color
         } else {
+            if (question == Question.IDLE)
+                return question.question to status.color
             if (mistakes++ < MAX_MISTAKES) {
                 status = status.nextStatus()
                 "Это неправильный ответ\n${question.question}" to status.color
@@ -30,11 +33,11 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
         }
     }
 
-    enum class Status(val color: Triple<Int, Int, Int>){
-        NORMAL(Triple(255, 255, 255)),
+    enum class Status(val color: Triple<Int, Int, Int>) {
+        NORMAL(Triple(255, 255, 255)) ,
         WARNING(Triple(255, 120, 0)),
         DANGER(Triple(255, 60, 60)),
-        CRITICAL(Triple(255, 255, 0));
+        CRITICAL(Triple(255, 0, 0)) ;
 
         fun nextStatus(): Status {
             return if (this.ordinal< values().lastIndex){
@@ -53,7 +56,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
 //                        "Имя должно начинаться с заглавной буквы"
 //            }
         },
-        PROFESSION("Назови мою професию?", listOf("сгибальщик", "bender")){
+        PROFESSION("Назови мою профессию?", listOf("сгибальщик", "bender")){
             override fun nextQuestion(): Question = MATERIAL
 //            override fun validate(answer: String): Pair<Boolean, String?> {
 //                return (answer.isNotEmpty() && answer[0].isLetter() && answer[0].isUpperCase()) to
