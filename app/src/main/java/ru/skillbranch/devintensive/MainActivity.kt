@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
         outState?.putInt("MISSES", benderObj.mistakes)
         Log.d("M_MainActivity", "onSaveInstanceState ${benderObj.status.name} ${benderObj.question.name}")
     }
-//
+
 //    fun Activity.hideKeyboard() {
 //        val view = this.currentFocus
 //        if (view != null) {
@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
             benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
             textTxt.text = phrase
         }
-       // hideKeyboard()
+      //this.hideKeyboard()
     }
 
 //    override fun onEditorAction(textView: TextView?, actionId: Int, event: KeyEvent?): Boolean {
