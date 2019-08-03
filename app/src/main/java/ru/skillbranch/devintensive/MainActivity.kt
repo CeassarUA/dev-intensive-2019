@@ -38,7 +38,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
 
         val status = savedInstanceState?.getString("STATUS") ?: Bender.Status.NORMAL.name
         val question = savedInstanceState?.getString("QUESTION") ?: Bender.Question.NAME.name
-        benderObj = Bender(Bender.Status.valueOf(status), Bender.Question.valueOf(question))
+        val mistakes = savedInstanceState?.getInt("MISSES") ?: 0
+        benderObj = Bender(Bender.Status.valueOf(status), Bender.Question.valueOf(question), mistakes)
 
         Log.d("M_MainActivity", "onCreate $status $question")
 
@@ -86,9 +87,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
 
         outState?.putString("STATUS", benderObj.status.name)
         outState?.putString("QUESTION", benderObj.question.name)
+        outState?.putInt("MISSES", benderObj.mistakes)
         Log.d("M_MainActivity", "onSaveInstanceState ${benderObj.status.name} ${benderObj.question.name}")
     }
-
+//
 //    fun Activity.hideKeyboard() {
 //        val view = this.currentFocus
 //        if (view != null) {
@@ -105,7 +107,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
             benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
             textTxt.text = phrase
         }
-//        hideKeyboard()
+       // hideKeyboard()
     }
 
 //    override fun onEditorAction(textView: TextView?, actionId: Int, event: KeyEvent?): Boolean {
