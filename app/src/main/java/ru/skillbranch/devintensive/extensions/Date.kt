@@ -2,6 +2,7 @@ package ru.skillbranch.devintensive.extensions
 
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 const val SECOND = 1000L
 const val MINUTE = 60 * SECOND
@@ -22,79 +23,62 @@ fun Date.add(value: Int, units: TimeUnits = TimeUnits.SECOND): Date {
         TimeUnits.HOUR -> value * HOUR
         TimeUnits.DAY -> value * DAY
     }
-
     this.time = time
-
     return this
 }
 
 fun Date.humanizeDiff(date: Date = Date()): String {
-    val timeDiffMillis = this.time - date.time
-    val timeDif = object {
-        var min: Int = Math.abs(timeDiffMillis / MINUTE).toInt()
-        var h: Int = Math.abs(timeDiffMillis / HOUR).toInt()
-        var days: Int = Math.abs(timeDiffMillis / DAY).toInt()
-    }
-
-    return when (Math.abs(timeDiffMillis)) {
-        0 * SECOND, 1 * SECOND -> "только что"
-
-        in 2 * SECOND..45 * SECOND -> if (timeDiffMillis > 0) "через несколько секунд" else "несколько секунд назад"
-
-        in 45 * SECOND..75 * SECOND -> if (timeDiffMillis > 0) "через минуту" else "минуту назад"
-
-        in 75 * SECOND..45 * MINUTE -> if (timeDiffMillis > 0)
-            "через ${TimeUnits.MINUTE.plural(timeDif.min)}"
-        else "${TimeUnits.MINUTE.plural(timeDif.min)} назад"
-
-        in 45 * MINUTE..75 * MINUTE -> if (timeDiffMillis > 0) "через час" else "час назад"
-
-        in 75 * MINUTE..22 * HOUR -> if (timeDiffMillis > 0)
-            "через ${TimeUnits.HOUR.plural(timeDif.h)}" else
-            "${TimeUnits.HOUR.plural(timeDif.h)} назад"
-
-        in 22 * HOUR..26 * HOUR -> if (timeDiffMillis > 0) "через день" else "день назад"
-
-        in 26 * HOUR..360 * DAY -> if (timeDiffMillis > 0)
-            "через ${TimeUnits.DAY.plural(timeDif.days)}" else
-            "${TimeUnits.DAY.plural(timeDif.days)} назад"
-
-        else -> if (timeDiffMillis > 0) "более чем через год" else "более года назад"
-
+    val different = (date.time - this.time)
+    return if (different >= 0) {
+        when (different) {
+            in 0L * SECOND..1L * SECOND -> "только что"
+            in 1L * SECOND..45L * SECOND -> "несколько секунд назад"
+            in 45L * SECOND..75L * SECOND -> "минуту назад"
+            in 75L * SECOND..45L * MINUTE -> "${TimeUnits.MINUTE.plural((different / MINUTE).toInt())} назад"
+            in 45L * MINUTE..75L * MINUTE -> "час назад"
+            in 75L * MINUTE..22L * HOUR -> "${TimeUnits.HOUR.plural((different / HOUR).toInt())} назад"
+            in 22L * HOUR..26L * HOUR -> "день назад"
+            in 26L * HOUR..360L * DAY -> "${TimeUnits.DAY.plural((different / DAY).toInt())} назад"
+            else -> "более года назад"
+        }
+    } else {
+        when (val absDifferent = abs(different)) {
+            in 0L * SECOND..1L * SECOND -> "только что"
+            in 1L * SECOND..45L * SECOND -> "через несколько секунд"
+            in 45L * SECOND..75L * SECOND -> "через минуту"
+            in 75L * SECOND..45L * MINUTE -> "через ${TimeUnits.MINUTE.plural((absDifferent / MINUTE).toInt())}"
+            in 45L * MINUTE..75L * MINUTE -> "через час"
+            in 75L * MINUTE..22L * HOUR -> "через ${TimeUnits.HOUR.plural((absDifferent / HOUR).toInt())}"
+            in 22L * HOUR..26L * HOUR -> "через день"
+            in 26L * HOUR..360L * DAY -> "через ${TimeUnits.DAY.plural((absDifferent / DAY).toInt())}"
+            else -> "более чем через год"
+        }
     }
 }
 
 enum class TimeUnits {
+
     SECOND,
     MINUTE,
     HOUR,
     DAY;
 
-    fun plural(value: Int): String {
-        val r = value % 10
-        val r2 = value % 100
-
-        return "$value " + when (this) {
-            SECOND -> when (r) {
-                1 -> if (r2 in 11..19) "секунд" else "секунду"
-                2, 3, 4 -> if (r2 in 11..19) "секунд" else "секунды"
-                else -> "секунд"
-            }
-            MINUTE -> when (r) {
-                1 -> if (r2 in 11..19) "минут" else "минуту"
-                2, 3, 4 -> if (r2 in 11..19) "минут" else "минуты"
-                else -> "минут"
-            }
-            HOUR -> when (r) {
-                1 -> if (r2 in 11..19) "часов" else "час"
-                2, 3, 4 -> if (r2 in 11..19) "часов" else "часа"
-                else -> "часов"
-            }
-            DAY -> when (r) {
-                1 -> if (r2 in 11..19) "дней" else "день"
-                2, 3, 4 -> if (r2 in 11..19) "дней" else "дня"
-                else -> "дней"
-            }
+    fun plural(valueInt: Int): String {
+        val forms = when(this){
+            SECOND -> "секунду;секунды;секунд".split(";")
+            MINUTE -> "минуту;минуты;минут".split(";")
+            HOUR -> "час;часа;часов".split(";")
+            DAY -> "день;дня;дней".split(";")
         }
+        val value = valueInt.toLong()
+        when (value % 10) {
+            1L -> if (value % 100L != 11L)
+                return "$value ${forms[0]}"
+            2L, 3L, 4L -> return if (value % 100 !in 12..14)
+                "$value ${forms[1]}"
+            else "$value ${forms[2]}"
+        }
+        return "$value ${forms[2]}"
     }
+
 }
