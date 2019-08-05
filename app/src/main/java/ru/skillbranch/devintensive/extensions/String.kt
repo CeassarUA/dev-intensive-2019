@@ -1,19 +1,12 @@
 package ru.skillbranch.devintensive.extensions
 
-import android.text.Html
-
-fun String.truncate(length:Int=16):String{
-    //Todo check to count +1
-    var res = this.substring(0,length+1)
-    if (res[res.length-1]==' ')
-        res=res.dropLast(1)
-    return res.plus("...")
+fun String.stripHtml(): String {
+    return this
+        .replace(Regex("(?:<[^>]*>)|(?:&[#a-z0-9]+;)"), "")
+        .replace(Regex(" +"), " ")
 }
-fun String.stripHtml():String{
-    var tags = """(<[^<>]*>)|(  +)|([&<>'"])"""
-    val regex = Regex(  tags)
 
-    return  regex.replace(this, "") // result: abxcdxef
-
-
+fun String.truncate(count: Int = 16): String {
+    val trimmed = this.trim()
+    return if (trimmed.length > count) trimmed.substring(0, count).trimEnd().plus("...") else trimmed
 }
