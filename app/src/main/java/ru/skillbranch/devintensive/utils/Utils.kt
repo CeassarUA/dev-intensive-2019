@@ -16,10 +16,10 @@ object Utils {
         return Pair(firstName, lastName)
     }
 
-    fun transliteration(payload: String, divider:String = ""): String {
+    fun transliteration(payload: String, divider:String = " "): String {
         val mapping = payload.map {
             when(it){
-               ' '->divider
+               ' '->""
                 'а'-> 'a'
                 'б' -> 'b'
                 'в' -> 'v'
@@ -97,9 +97,15 @@ object Utils {
         var output: String?
         if ((firstName?.replace(" ", "") == "" && lastName?.replace(" ", "") == "") ||
             (firstName == null && lastName == null))
-            return null
+            return ""
         else
             return "${firstName?.replace(" ", "")?.getOrNull(0) ?: ""} ${lastName?.replace(" ", "")?.getOrNull(0)
                 ?: ""}".toUpperCase()
     }
+
+    fun verification(github: String) = Regex(
+        "((https://|www.|https://www.)?github.com/(?!enterprise$|features$|topics$|collections$|trending$|events$|marketplace$|pricing$|nonprofit$|customer-stories$|security$|login$|join$)[\\w\\d-_]{1,39}/?$)|").find(github)?.value == github
+
+
+
 }

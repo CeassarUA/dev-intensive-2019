@@ -4,6 +4,8 @@ import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -16,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_profile.*
 import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.models.Profile
+import ru.skillbranch.devintensive.utils.Utils
 import ru.skillbranch.devintensive.viewmodels.ProfileViewModel
 
 class ProfileActivity : AppCompatActivity() {
@@ -28,7 +31,7 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var viewFields: Map<String, TextView>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //set custom Theme this before super and setContentView
+        setTheme(R.style.AppTheme)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
@@ -135,6 +138,31 @@ class ProfileActivity : AppCompatActivity() {
             repository = et_repository.text.toString()
         ).apply {
             viewModel.saveProfileData(this)
+        }
+
+        if (!Utils.verification(et_repository.text.toString())) {
+//            et_repository.setError(null, null)
+            et_repository.text.replace(0, et_repository.text.length, "")
+//            et_repository.error = ""
+        }
+    }
+
+    val textWatcher = object : TextWatcher {
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            if (!Utils.verification(et_repository.text.toString())) {
+                wr_repository.error = "Невалидный адрес репозитория"
+                wr_repository.isErrorEnabled = true
+            } else {
+                wr_repository.error = null
+                wr_repository.isErrorEnabled = false
+            }
+        }
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+        }
+
+        override fun afterTextChanged(s: Editable) {
+
         }
     }
 
