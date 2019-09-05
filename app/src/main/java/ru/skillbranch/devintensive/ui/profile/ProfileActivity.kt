@@ -12,12 +12,9 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_profile.*
 import ru.skillbranch.devintensive.R
-import ru.skillbranch.devintensive.models.Profile
 import ru.skillbranch.devintensive.utils.Utils
 import ru.skillbranch.devintensive.viewmodels.ProfileViewModel
 
@@ -50,7 +47,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun initViewModel(){
         viewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
-        viewModel.getProfileData().observe(this, Observer{updateUI(it)})
+       // viewModel.getProfileData().observe(this, Observer{updateUI(it)})
         viewModel.getTheme().observe(this, Observer { updateTheme(it) })
     }
 
@@ -59,14 +56,14 @@ class ProfileActivity : AppCompatActivity() {
         delegate.setLocalNightMode(mode)
     }
 
-    private fun updateUI(profile: Profile) {
-        profile.toMap().also {
-            for ((k,v) in viewFields){
-                v.text = it[k].toString()
-            }
-        }
-
-    }
+//    private fun updateUI(profile: Profile) {
+//        profile.toMap().also {
+//            for ((k,v) in viewFields){
+//                //v.text = it[k].toString()
+//            }
+//        }
+//
+//    }
 
     private fun initViews(savedInstanceState: Bundle?) {
 
@@ -85,7 +82,7 @@ class ProfileActivity : AppCompatActivity() {
         showCurrentMode(isEditMode)
         
         btn_edit.setOnClickListener {
-            if (isEditMode) saveProfileInfo()
+           // if (isEditMode) saveProfileInfo()
             isEditMode = !isEditMode
             showCurrentMode(isEditMode)
         }
@@ -110,14 +107,14 @@ class ProfileActivity : AppCompatActivity() {
         wr_about.isCounterEnabled = isEdit
 
         with(btn_edit){
-            val filter: ColorFilter? = if (isEdit){
+            val filter: ColorFilter? = (if (isEdit){
                 PorterDuffColorFilter(
                     resources.getColor(R.color.color_accent, theme),
                     PorterDuff.Mode.SRC_IN
                 )
             }else{
                 null
-            }
+            })
 
             val icon = if (isEdit){
                 resources.getDrawable(R.drawable.ic_save_black_24dp, theme)
@@ -130,22 +127,22 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveProfileInfo(){
-        Profile(
-            firstName = et_first_name.text.toString(),
-            lastName = et_last_name.text.toString(),
-            about = et_about.text.toString(),
-            repository = et_repository.text.toString()
-        ).apply {
-            viewModel.saveProfileData(this)
-        }
-
-        if (!Utils.verification(et_repository.text.toString())) {
-//            et_repository.setError(null, null)
-            et_repository.text.replace(0, et_repository.text.length, "")
-//            et_repository.error = ""
-        }
-    }
+//    private fun saveProfileInfo(){
+//        Profile(
+//            firstName = et_first_name.text.toString(),
+//            lastName = et_last_name.text.toString(),
+//            about = et_about.text.toString(),
+//            repository = et_repository.text.toString()
+//        ).apply {
+//            viewModel.saveProfileData(this)
+//        }
+//
+//        if (!Utils.verification(et_repository.text.toString())) {
+////            et_repository.setError(null, null)
+//            et_repository.text.replace(0, et_repository.text.length, "")
+////            et_repository.error = ""
+//        }
+//    }
 
     val textWatcher = object : TextWatcher {
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {

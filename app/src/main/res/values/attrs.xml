@@ -4,11 +4,20 @@
         <attr name="aspectRatio" format="float"/>
     </declare-styleable>
 
+    <declare-styleable name="AvatarImageView">
+        <attr name="aiv_borderColor" format="color"/>
+        <attr name="aiv_borderWidth" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="CircleImageView">
+        <attr name="cv_borderColor" format="reference"/>
+        <attr name="cv_borderWidth" format="dimension"/>
+        <attr name="highlightEnable" format="boolean"/>
+        <attr name="highlightColor" format="color"/>
+    </declare-styleable>
+
     <attr name="colorAccentedSurface" format="reference"/>
     <attr name="colorDivider" format="reference"/>
     <attr name="colorIcon" format="reference"/>
-    
-    <attr name="cv_borderColor" format="color"/>
-    <attr name="cv_borderWidth" format="dimension"/>
 
 </resources>
